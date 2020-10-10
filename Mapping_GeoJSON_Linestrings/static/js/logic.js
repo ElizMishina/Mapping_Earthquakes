@@ -8,20 +8,21 @@ console.log("working");
 //let map = L.map('mapid').setView([30, 30], 2);
 
 // Accessing the airport GeoJSON URL
-let airportData = "https://raw.githubusercontent.com/ElizMishina/Mapping_Earthquakes/main/majorAirports.json";
+let torontoData  = "https://raw.githubusercontent.com/ElizMishina/Mapping_Earthquakes/main/torontoRoutes.json";
 
-d3.json(airportData).then(function(data) {
+// Grabbing our GeoJSON data.
+d3.json(torontoData).then(function(data) {
     console.log(data);
-    L.geoJson(data,{
-        pointToLayer: function(feature, latlng) {
-          console.log(feature);
-          return L.marker(latlng)
-          .bindPopup("<h3>" + "Ariport code: " + feature.properties.faa + "<h3>" + "<h3>" + "Ariport name: " +feature.properties.name + "</h3>")
-          }
-      }).addTo(map);
-
-
+  // Creating a GeoJSON layer with the retrieved data.
+  L.geoJson(data, {
+      color: "#ffffa1",
+      weight: 2,
+      oneEachFeature: function(feature, layer) {
+          layer.bindPopup("<h3> Airline: " + feature.properties.airline + "<h3> <hr><h3>" + "Destination: " + feature.properties.dst + "</h3>");
+      }
+  }).addTo(map);
 });
+
 
 // We create the tile layer that will be the background of our map.
 let streets = L.tileLayer('https://api.mapbox.com/styles/v1/mapbox/streets-v11/tiles/{z}/{x}/{y}?access_token={accessToken}', {
@@ -39,8 +40,8 @@ attribution: 'Map data © <a href="https://www.openstreetmap.org/">OpenStreetMap
 
 // Create a base layer that holds both maps.
 let baseMaps = {
-    Street: streets,
-    Dark: dark
+    "Day Navigation": streets,
+    "Night Navigation": dark
   };
 
   // Create the map object with center, zoom level and default layer.
