@@ -124,7 +124,7 @@ legend.onAdd = function() {
   return div;
 };
 
-legend.addTo(map);;
+legend.addTo(map);
 
 // Then we add a control to the map that will allow the user to change
 // which layers are visible.
